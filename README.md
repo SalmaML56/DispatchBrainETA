@@ -50,6 +50,6 @@ The model is trained on real logistics data and exposed via a FastAPI endpoint. 
 3. Click **Predict ETA**
 4. View the estimated arrival time in minutes
 
----
 
-## 📂 Project Structure
+
+
