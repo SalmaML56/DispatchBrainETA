@@ -38,13 +38,11 @@ drop_lon = st.number_input("Drop Longitude", value=73.1350)
 # -------------------------------
 # Prepare Payload for API
 # -------------------------------
-# Convert day name to numeric format
 day_map = {
     "Monday": 0, "Tuesday": 1, "Wednesday": 2,
     "Thursday": 3, "Friday": 4, "Saturday": 5, "Sunday": 6
 }
 
-# Create dictionary to send to FastAPI
 payload = {
     "hour": hour,
     "day_of_week": day_map[day_of_week],
@@ -62,16 +60,19 @@ payload = {
 # -------------------------------
 # API Call and Prediction Display
 # -------------------------------
+API_URL = "https://dispatchbrain-backend.onrender.com/predict_eta"  # Replace with your actual backend URL
+
 if st.button("Predict ETA"):
     try:
-        # Send POST request to FastAPI
-        response = requests.post("http://127.0.0.1:8000/predict_eta", json=payload)
+        response = requests.post(API_URL, json=payload)
+        response.raise_for_status()
         result = response.json()
-
-        # Show prediction result
         st.success(f"Estimated Arrival Time: {result['predicted_eta_minutes']} minutes")
 
+    except requests.exceptions.RequestException as req_err:
+        st.error("Prediction failed due to a connection issue.")
+        st.code(str(req_err), language="text")
+
     except Exception as e:
-        # Show error if API call fails
-        st.error("❌ Prediction failed. Please check if the FastAPI server is running.")
-        st.code(str(e), language="bash")
+        st.error("An unexpected error occurred during prediction.")
+        st.code(str(e), language="text")
