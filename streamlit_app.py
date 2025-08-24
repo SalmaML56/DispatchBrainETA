@@ -4,21 +4,23 @@ os.environ["STREAMLIT_BROWSER_GATHER_USAGE_STATS"] = "false"
 import streamlit as st
 import requests
 
-# -------------------------------
+# --------------------------------------------------
 # Page Configuration
-# -------------------------------
+# --------------------------------------------------
 st.set_page_config(page_title="DispatchBrain ETA Predictor", layout="centered")
 st.title("Dispatch ETA Prediction")
 st.write("Fill in the delivery details below to get an estimated arrival time.")
 
-# -------------------------------
+# --------------------------------------------------
 # Input Section
-# -------------------------------
+# --------------------------------------------------
 st.subheader("Delivery Information")
 
 # Time and Date Inputs
 hour = st.slider("Hour of Day", min_value=0, max_value=23, value=14)
-day_of_week = st.selectbox("Day of Week", options=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
+day_of_week = st.selectbox("Day of Week", options=[
+    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+])
 is_weekend = st.radio("Is it Weekend?", options=["No", "Yes"])
 
 # Distance and Duration Inputs
@@ -35,14 +37,16 @@ pickup_lon = st.number_input("Pickup Longitude", value=74.3587)
 drop_lat = st.number_input("Drop Latitude", value=31.4504)
 drop_lon = st.number_input("Drop Longitude", value=73.1350)
 
-# -------------------------------
+# --------------------------------------------------
 # Prepare Payload for API
-# -------------------------------
+# --------------------------------------------------
+# Convert day name to numeric format
 day_map = {
     "Monday": 0, "Tuesday": 1, "Wednesday": 2,
     "Thursday": 3, "Friday": 4, "Saturday": 5, "Sunday": 6
 }
 
+# Construct payload dictionary
 payload = {
     "hour": hour,
     "day_of_week": day_map[day_of_week],
@@ -57,16 +61,19 @@ payload = {
     "drop_lon": drop_lon
 }
 
-# -------------------------------
+# --------------------------------------------------
 # API Call and Prediction Display
-# -------------------------------
-API_URL = "https://dispatchbrain-backend.onrender.com/predict_eta"  # Replace with your actual backend URL
+# --------------------------------------------------
+API_URL = "http://127.0.0.1:8000/predict_eta"  # Update this to your deployed backend URL when ready
 
 if st.button("Predict ETA"):
     try:
+        # Send POST request to FastAPI backend
         response = requests.post(API_URL, json=payload)
         response.raise_for_status()
         result = response.json()
+
+        # Display prediction result
         st.success(f"Estimated Arrival Time: {result['predicted_eta_minutes']} minutes")
 
     except requests.exceptions.RequestException as req_err:
