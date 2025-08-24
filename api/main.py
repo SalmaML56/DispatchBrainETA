@@ -1,17 +1,29 @@
 import joblib
 import pandas as pd
 import os
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+# 🔹 Initialize FastAPI app
+app = FastAPI(title="DispatchBrain ETA Predictor")
+
+# 🔹 Enable CORS for frontend access
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # You can restrict to your Streamlit domain later
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # 🔹 Load model
-model_path = os.path.join(os.path.dirname(__file__), '..', 'models', 'lightgbm_model.pkl')
+model_path = os.path.join("models", "lightgbm_model.pkl")
 if not os.path.exists(model_path):
     raise FileNotFoundError(f"Model file not found at: {model_path}")
 model = joblib.load(model_path)
 
 # 🔹 Load feature template
-feature_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'features', 'X_features_dispatchbrain.csv')
+feature_path = os.path.join("data", "features", "X_features_dispatchbrain.csv")
 if not os.path.exists(feature_path):
     raise FileNotFoundError(f"Feature template not found at: {feature_path}")
 feature_template = pd.read_csv(feature_path)
@@ -30,9 +42,6 @@ class DispatchInput(BaseModel):
     pickup_lon: float
     drop_lat: float
     drop_lon: float
-
-# 🔹 Initialize FastAPI app
-app = FastAPI(title="DispatchBrain ETA Predictor")
 
 # 🔹 Prediction endpoint
 @app.post("/predict_eta")
