@@ -1,41 +1,55 @@
-# 🚚 DispatchBrainETA
+# DispatchBrain ETA Predictor 🚚🧠
 
-**DispatchBrainETA** is a production-grade machine learning dashboard for predicting delivery Estimated Time of Arrival (ETA). Built with Streamlit and powered by a trained LightGBM model, this app transforms raw logistics data into actionable insights for operations teams and delivery platforms.
-
-🔗 **Live Demo**: [dispatchbraineta.streamlit.app](https://dispatchbraineta-dmhedn8qbnwhdafr6x6h4l.streamlit.app/)
+An interactive machine learning dashboard that predicts estimated delivery arrival time (ETA) based on real-world logistics inputs. Built with **Streamlit**, powered by a **FastAPI backend**, and deployed via **Docker** on Hugging Face Spaces.
 
 ---
 
-## 📦 Features
+## 🔗 Live Demo
 
-- **Interactive Dashboard**: Clean, responsive UI built with Streamlit
-- **Real-Time ETA Prediction**: Inputs processed via FastAPI backend
-- **ML-Powered Inference**: LightGBM model trained on engineered logistics data
-- **Modular Architecture**: Clear separation of API, model, and frontend
-- **Cloud Deployment**: Hosted on Streamlit Cloud with GitHub integration
+- 🌐 **Frontend (Streamlit Dashboard):**  
+  [DispatchBrain-Fronted on Hugging Face](https://huggingface.co/spaces/salmaml56/DispatchBrain-Fronted)
 
----
-
-## 🧠 Tech Stack
-
-- Python · Streamlit · FastAPI · LightGBM · Pandas · Git · GitHub · Streamlit Cloud
+- ⚙️ **Backend (FastAPI API):**  
+  [DispatchBrainETA API Space](https://huggingface.co/spaces/salmaml56/DispacthBrainETA)
 
 ---
 
-## 📊 Use Case
+## 🧠 What It Does
 
-Designed for logistics companies and delivery platforms aiming to:
+This app predicts the delivery ETA based on:
 
-- Optimize dispatch planning  
-- Reduce delivery delays  
-- Improve customer satisfaction through predictive analytics
+- Hour of the day  
+- Day of the week  
+- Weekend indicator  
+- Distance and log-distance  
+- Weather severity  
+- Expected delivery duration
+
+The model is trained on real logistics data and exposed via a FastAPI endpoint. The Streamlit frontend collects user inputs, sends them to the backend, and displays the predicted ETA in minutes.
 
 ---
 
-## 🚀 Getting Started
+## 🛠 Tech Stack
 
-### 1. Clone the repository
+| Layer       | Tools Used                     |
+|-------------|--------------------------------|
+| Frontend    | Streamlit                      |
+| Backend     | FastAPI                        |
+| Deployment  | Docker + Hugging Face Spaces   |
+| ML Model    | Scikit-learn / XGBoost (custom)|
+| API Comm    | `requests` library             |
 
-```bash
-git clone https://github.com/SalmaML56/DispatchBrainETA.git
-cd DispatchBrainETA
+---
+
+## 📋 How to Use
+
+1. Open the [Live Demo](https://huggingface.co/spaces/salmaml56/DispatchBrain-Fronted)
+2. Fill in delivery details:
+   - Hour, Day, Weekend status  
+   - Distance, Duration, Weather severity
+3. Click **Predict ETA**
+4. View the estimated arrival time in minutes
+
+---
+
+## 📂 Project Structure
