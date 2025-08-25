@@ -1,5 +1,2 @@
-fastapi
-uvicorn
-joblib
-pandas
-numpy
+streamlit==1.28.2
+requests
