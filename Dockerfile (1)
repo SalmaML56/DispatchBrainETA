@@ -1,0 +1,18 @@
+FROM python:3.9-slim
+
+# Set environment variables to redirect Streamlit and Matplotlib writes
+ENV STREAMLIT_DATA_PATH=/tmp
+ENV STREAMLIT_CONFIG_FILE=/tmp/config.toml
+ENV MPLCONFIGDIR=/tmp/matplotlib_cache
+
+# Set working directory
+WORKDIR /app
+
+# Copy files and install dependencies
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+# Run Streamlit
+CMD ["streamlit", "run", "app_front.py", "--server.port=7860", "--server.headless=true"]
